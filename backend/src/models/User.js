@@ -52,6 +52,7 @@ const User =  mongoose.model("User",userSchema);
 
 userSchema.pre("save", async function(next)
 {
+    if(!this.isModified("password")) return next();
     try {
         const salt = await bcrypt.genSalt(10);
         this.pass = await bcrypt.hash(this.password,salt); //for hashing password
